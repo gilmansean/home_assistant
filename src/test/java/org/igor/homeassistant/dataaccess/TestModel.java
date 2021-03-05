@@ -2,7 +2,7 @@ package org.igor.homeassistant.dataaccess;
 
 import org.igor.homeassistant.annotations.HomeAssistantDAO;
 
-@HomeAssistantDAO(location = "testData",primaryIdentifiers = {"id"})
+@HomeAssistantDAO(location = "testData", primaryIdentifiers = {"id"})
 public class TestModel {
     private String id;
     private String name;

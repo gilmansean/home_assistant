@@ -1,12 +1,14 @@
-package org.igor.homeassistant.model;
+package org.igor.homeassistant.dataaccess.model;
 
 import org.igor.homeassistant.annotations.HomeAssistantDAO;
+import org.igor.homeassistant.annotations.HomeAssistantThreshold;
 
 import java.util.Date;
-@HomeAssistantDAO(location = "temperature.data",
-                  primaryIdentifiers = {"id"})
+
+@HomeAssistantDAO(location = "temperature", primaryIdentifiers = {"id"})
+@HomeAssistantThreshold(thresholdField = "reading", primaryIdentifiers = {"id"})
 public class Temperature {
-    private final Long id;
+    private String id;
     private String name;
     private String group;
     private Scale readingScale = Scale.FAHRENHEIT;
@@ -15,15 +17,19 @@ public class Temperature {
 
     //constructor so this can be used in a search
     public Temperature() {
-        this.id = -1L;
+        this.id = "-1";
     }
 
-    public Temperature(Long id) {
+    public Temperature(String id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -67,7 +73,6 @@ public class Temperature {
     }
 
     public enum Scale {
-        FAHRENHEIT,
-        CELSIUS
+        FAHRENHEIT, CELSIUS
     }
 }

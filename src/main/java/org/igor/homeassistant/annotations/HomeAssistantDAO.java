@@ -11,7 +11,7 @@ public @interface HomeAssistantDAO {
     /**
      * Location of where the data is stored.  Could be a file or table name.
      */
-    String location() default "";
+    String location();
 
     /**
      * Fields on the class to use as primary identifiers for finding unique entries.
