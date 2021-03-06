@@ -13,6 +13,14 @@ public class Threshold {
     private Boolean alertUnder = false;
     private String email;
 
+    public Threshold(String id) {
+        this.id = id;
+    }
+
+    public Threshold() {
+        this.id = "";
+    }
+
     public String getId() {
         return id;
     }

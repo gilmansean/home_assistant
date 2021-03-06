@@ -13,13 +13,15 @@ import java.lang.annotation.Target;
 public @interface HomeAssistantThreshold {
     /**
      * Field name that the threshold monitor should check.
+     *
      * @return
      */
     String thresholdField();
 
     /**
-     * The primary identifier(s) that are used to look up the threshold settings.
-     * If multiple identifiers are used they will be concatenated to a single entry in the threshold monitor record.
+     * The primary identifier(s) that are used to look up the threshold settings. If multiple identifiers are used they
+     * will be concatenated to a single entry in the threshold monitor record.
+     *
      * @return
      */
     String[] primaryIdentifiers();

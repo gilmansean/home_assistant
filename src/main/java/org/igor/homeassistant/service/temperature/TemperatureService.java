@@ -3,12 +3,12 @@ package org.igor.homeassistant.service.temperature;
 import org.igor.homeassistant.dataaccess.ObjectDataAccess;
 import org.igor.homeassistant.dataaccess.model.Temperature;
 import org.igor.homeassistant.exception.DataAccessException;
+import org.igor.homeassistant.utility.UniqueId;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @ConfigurationProperties(prefix = "temperature")
@@ -33,7 +33,7 @@ public class TemperatureService {
     }
 
     public Temperature createTemperature(Temperature temperature) throws DataAccessException {
-        Temperature newTemp = new Temperature(createUID());
+        Temperature newTemp = UniqueId.createWithUID(Temperature.class);
         newTemp.setName(temperature.getName());
         newTemp.setGroup(temperature.getGroup());
         newTemp.setReading(temperature.getReading());
@@ -64,8 +64,4 @@ public class TemperatureService {
         return objectDataAccess.removeObjects(temperature);
     }
 
-    private String createUID() {
-        return UUID.randomUUID()
-                   .toString();
-    }
 }

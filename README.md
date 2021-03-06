@@ -21,6 +21,13 @@ To run a local instance:
 A Swagger UI will be running on http://localhost:8080/swagger-ui.html with the OpenAPI spec
 on http://localhost:8080/api-docs
 
+## Configuration
+
+Configuration settings are driven by the Spring Boot [application.properties](src/main/resources/application.properties)
+file. Each setting has an associated environment variable that can be used to override the default. I won't list all of
+the settings here, you are smart enough to read the file. But if some settings are not too clear I will make notes in
+the property file.
+
 ## Roadmap
 
 * Tempature - keep a record of temps. add a threashold and alarm if over. Run scheduled reports on temp trends.

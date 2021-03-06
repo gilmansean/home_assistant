@@ -17,7 +17,7 @@ public class Temperature {
 
     //constructor so this can be used in a search
     public Temperature() {
-        this.id = "-1";
+        this.id = "";
     }
 
     public Temperature(String id) {
