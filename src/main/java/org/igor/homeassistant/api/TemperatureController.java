@@ -1,5 +1,7 @@
 package org.igor.homeassistant.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.igor.homeassistant.api.response.HomeAssistantResponse;
 import org.igor.homeassistant.dataaccess.model.Temperature;
 import org.igor.homeassistant.exception.DataAccessException;
@@ -8,12 +10,15 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * API Controller for the Temperature collection
  */
 @RestController
+@RequestMapping(value = "/api/v1")
 public class TemperatureController {
+    private Logger log = Logger.getLogger(TemperatureController.class.getName());
 
     private TemperatureService temperatureService;
 
@@ -22,6 +27,7 @@ public class TemperatureController {
     }
 
     @GetMapping(value = "/temperature", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     public HomeAssistantResponse<List<Temperature>> getTemperature(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "group", required = false) String group) throws DataAccessException {
@@ -35,6 +41,7 @@ public class TemperatureController {
     }
 
     @GetMapping(value = "/temperature/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     public HomeAssistantResponse<Temperature> getTemperaturebyId(@PathVariable("id") String id)
             throws DataAccessException {
         HomeAssistantResponse<Temperature> response = new HomeAssistantResponse();
@@ -45,6 +52,7 @@ public class TemperatureController {
     }
 
     @PostMapping(value = "/temperature", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     public HomeAssistantResponse<Temperature> postTemperature(@RequestBody Temperature temperature)
             throws DataAccessException {
         Temperature savedTemp = temperatureService.createTemperature(temperature);
@@ -54,6 +62,7 @@ public class TemperatureController {
     }
 
     @PutMapping(value = "/temperature/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     public HomeAssistantResponse<Temperature> putTemperature(@PathVariable("id") String id,
                                                              @RequestBody Temperature temperature)
             throws DataAccessException {
@@ -65,6 +74,7 @@ public class TemperatureController {
     }
 
     @DeleteMapping(value = "/temperature/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     public HomeAssistantResponse<List<Temperature>> deleteTemperature(@PathVariable("id") String id)
             throws DataAccessException {
         Temperature temperature = new Temperature(id);

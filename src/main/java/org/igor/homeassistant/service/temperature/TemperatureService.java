@@ -37,7 +37,7 @@ public class TemperatureService {
         newTemp.setName(temperature.getName());
         newTemp.setGroup(temperature.getGroup());
         newTemp.setReading(temperature.getReading());
-        if (temperature.getReadingDate() == null) {
+        if(temperature.getReadingDate() == null) {
             newTemp.setReadingDate(Calendar.getInstance()
                                            .getTime());
         } else {
@@ -51,7 +51,7 @@ public class TemperatureService {
 
     public Temperature updateTemperature(Temperature temperature) throws DataAccessException {
         Temperature existing = objectDataAccess.readObject(temperature);
-        if (existing == null) {
+        if(existing == null) {
             throw new DataAccessException("Can not update a temperature that does not exist");
         } else {
             objectDataAccess.saveObject(temperature);

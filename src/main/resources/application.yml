@@ -1,13 +1,18 @@
 application-description: ${APPLICATION_DESCRIPTION:REST Api's to support Igor Home Assistant}
 application-version: ${APPLICATION_VERSION:0.0.1}
 data:
-    access:
-        fileDirectory: ${DATA_ACCESS_FILEDIRECTORY:/tmp/igor}
-        storage: ${DATA_ACCESS_STORAGE:file}
+  access:
+    fileDirectory: ${DATA_ACCESS_FILEDIRECTORY:/tmp/igor}
+    storage: ${DATA_ACCESS_STORAGE:file}
 springdoc:
-    api-docs:
-        path: ${API_DOCS_PATH:/api-docs}
+  api-docs:
+    path: ${API_DOCS_PATH:/spec}
 server:
-    port: ${SERVER_PORT:8080}
-    servlet:
-        context-path: ${SERVER_CONTEXT_PATH:/}
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: ${SERVER_CONTEXT_PATH:/}
+jwt:
+  token:
+    util:
+      secret: igorsecretwhichyoushouldchangesoitisnotthesameasthisandkeepsecretbynotputtingintoacoderepository
+      tokenExpireInSeconds: 864000

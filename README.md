@@ -12,6 +12,10 @@ This is set up as a Gradle project, to build just run
 
 From the project root.
 
+## Security
+
+This project uses a JWT token based authorization.
+
 ## Run
 
 To run a local instance:
@@ -19,7 +23,7 @@ To run a local instance:
 `./gradlew bootRun`
 
 A Swagger UI will be running on http://localhost:8080/swagger-ui.html with the OpenAPI spec
-on http://localhost:8080/api-docs
+on http://localhost:8080/spec
 
 ## Configuration
 
@@ -30,17 +34,24 @@ the property file.
 
 ## Roadmap
 
-* Tempature - keep a record of temps. add a threashold and alarm if over. Run scheduled reports on temp trends.
+* Security!
+  * ~~enable JWT security on API endpoints~~
+  * add user storage
+  * add user management (create, delete, update)
+* Temperature
+  * ~~keep a record of temps.~~
+  * add a threshold and alarm if over.
+  * run scheduled reports on temp trends.
 * Grocery
-    * Inventory
-    * Shopping lists
+  * Inventory
+  * Shopping lists
 * Menu
-    * Suggested favorites
-    * Check against grocery inventory to make sure enough is on hand
+  * Suggested favorites
+  * Check against grocery inventory to make sure enough is on hand
 * Games
-    * Tic Tac Toe
-    * Checkers
-    * Chess  
-
+  * Tic Tac Toe
+  * Checkers
+  * Chess
+* More unit and integration tests! (Is there EVER enough?)
 
 

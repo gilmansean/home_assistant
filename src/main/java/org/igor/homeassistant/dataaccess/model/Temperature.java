@@ -75,4 +75,8 @@ public class Temperature {
     public enum Scale {
         FAHRENHEIT, CELSIUS
     }
+
+    public String toString() {
+        return "{ id: " + id + ", name: " + name + ", group: " + group + ", readingScale: " + readingScale.name() + ", reading: " + reading + "}";
+    }
 }

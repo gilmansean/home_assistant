@@ -35,13 +35,16 @@ class HomeAssistantApplicationTests {
     private String appDesciption;
 
     @Test
-    public void checkForSwaggerStuff() throws Exception {
-        //make sure the spec URL is up
+    public void testForSpecUrl() throws Exception {
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + apiDocsPath, String.class)).contains(
                 appDesciption);
-        //make sure the swagger UI is running
+    }
+
+    @Test
+    public void testForSwaggerUI() throws Exception {
         assertThat(
                 this.restTemplate.getForObject("http://localhost:" + port + "/swagger-ui.html", String.class)).contains(
                 "<title>Swagger UI</title>");
     }
+
 }

@@ -12,7 +12,7 @@ public class UniqueId {
         try {
             uniqueObject = clazz.getDeclaredConstructor(String.class)
                                 .newInstance(createUID());
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new DataAccessException("Can not create a new object with a unique id for class " + clazz.getName(),
                                           e);
         }

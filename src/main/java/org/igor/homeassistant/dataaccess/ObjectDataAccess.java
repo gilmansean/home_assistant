@@ -30,17 +30,17 @@ public class ObjectDataAccess {
 
     @PostConstruct
     public void init() throws DataAccessException {
-        if (storage == null || !storage.equals("file")) {
+        if(storage == null || !storage.equals("file")) {
             throw new DataAccessException("Currently only 'file' storage is supported.");
         }
-        if (fileDirectory == null || fileDirectory.isBlank()) {
+        if(fileDirectory == null || fileDirectory.isBlank()) {
             throw new DataAccessException("File storage directory is not defined.");
         } else {
             storageDirectory = new File(fileDirectory);
-            if (!storageDirectory.exists()) {
+            if(!storageDirectory.exists()) {
                 storageDirectory.mkdirs();
             }
-            if (!storageDirectory.isDirectory() || !storageDirectory.exists()) {
+            if(!storageDirectory.isDirectory() || !storageDirectory.exists()) {
                 throw new DataAccessException("File storage directory is not a directory that exists.");
             }
         }
@@ -58,7 +58,7 @@ public class ObjectDataAccess {
      * @throws DataAccessException
      */
     public <D> List<D> searchObjects(D data) throws DataAccessException {
-        if (data == null) {
+        if(data == null) {
             throw new DataAccessException("Can not do an object search on a null value.");
         }
         HomeAssistantDAO haDOA = data.getClass()
@@ -66,25 +66,25 @@ public class ObjectDataAccess {
         List<D> matchedEntries = new ArrayList<>();
         try {
             List<D> allData = readFile(haDOA.location(), data);
-            for (D fileData : allData) {
-                if (matches(data, fileData)) {
+            for(D fileData : allData) {
+                if(matches(data, fileData)) {
                     matchedEntries.add(fileData);
                 }
             }
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new DataAccessException(e);
         }
         return matchedEntries;
     }
 
     public <D> void saveObject(D newData) throws DataAccessException {
-        if (newData == null) {
+        if(newData == null) {
             throw new DataAccessException("Can not do a save on a null value.");
         }
         HomeAssistantDAO haDOA = newData.getClass()
                                         .getAnnotation(HomeAssistantDAO.class);
         String[] primaryIdentifiers = haDOA.primaryIdentifiers();
-        if (primaryIdentifiers.length < 1) {
+        if(primaryIdentifiers.length < 1) {
             throw new DataAccessException("Can not do a save on a DAO with no primary identifier fields.");
         }
         try {
@@ -92,19 +92,19 @@ public class ObjectDataAccess {
             ArrayList<Field> primaryFields = getPrimaryFields(newData, primaryIdentifiers);
             ArrayList<D> updatedList = new ArrayList<>();
             boolean updatedExisting = false;
-            for (D fileData : allData) {
-                if (isMatched(newData, primaryFields, fileData)) {
+            for(D fileData : allData) {
+                if(isMatched(newData, primaryFields, fileData)) {
                     updatedList.add(newData);
                     updatedExisting = true;
                 } else {
                     updatedList.add(fileData);
                 }
             }
-            if (!updatedExisting) {
+            if(!updatedExisting) {
                 updatedList.add(newData);
             }
             safeToFile(haDOA.location(), updatedList);
-        } catch (IOException | NoSuchFieldException | IllegalAccessException e) {
+        } catch(IOException | NoSuchFieldException | IllegalAccessException e) {
             throw new DataAccessException(e);
         }
     }
@@ -118,7 +118,7 @@ public class ObjectDataAccess {
      * @throws DataAccessException
      */
     public <D> void saveObjects(List<D> newData) throws DataAccessException {
-        if (newData == null || newData.isEmpty()) {
+        if(newData == null || newData.isEmpty()) {
             throw new DataAccessException(
                     "Can not clear out the collection by overwriting with empty file.  Use the remove instead.");
         }
@@ -127,7 +127,7 @@ public class ObjectDataAccess {
                                         .getAnnotation(HomeAssistantDAO.class);
         try {
             safeToFile(haDOA.location(), newData);
-        } catch (IOException e) {
+        } catch(IOException e) {
             throw new DataAccessException(e);
         }
     }
@@ -143,26 +143,26 @@ public class ObjectDataAccess {
      * @throws DataAccessException
      */
     public <D> D readObject(D data) throws DataAccessException {
-        if (data == null) {
+        if(data == null) {
             throw new DataAccessException("Can not do a read on a null value.");
         }
         HomeAssistantDAO haDOA = data.getClass()
                                      .getAnnotation(HomeAssistantDAO.class);
         String[] primaryIdentifiers = haDOA.primaryIdentifiers();
-        if (primaryIdentifiers.length < 1) {
+        if(primaryIdentifiers.length < 1) {
             throw new DataAccessException("Can not do a read on a DAO with no primary identifier fields.");
         }
         D foundEntry = null;
         try {
             List<D> allData = readFile(haDOA.location(), data);
             ArrayList<Field> primaryFields = getPrimaryFields(data, primaryIdentifiers);
-            for (D fileData : allData) {
-                if (isMatched(data, primaryFields, fileData)) {
+            for(D fileData : allData) {
+                if(isMatched(data, primaryFields, fileData)) {
                     foundEntry = fileData;
                     break;
                 }
             }
-        } catch (IOException | NoSuchFieldException | IllegalAccessException e) {
+        } catch(IOException | NoSuchFieldException | IllegalAccessException e) {
             throw new DataAccessException(e);
         }
         return foundEntry;
@@ -170,7 +170,7 @@ public class ObjectDataAccess {
 
     private <D> ArrayList<Field> getPrimaryFields(D data, String[] primaryIdentifiers) throws NoSuchFieldException {
         ArrayList<Field> primaryFields = new ArrayList<>();
-        for (String idField : primaryIdentifiers) {
+        for(String idField : primaryIdentifiers) {
             Field field = data.getClass()
                               .getDeclaredField(idField);
             field.setAccessible(true);
@@ -181,10 +181,10 @@ public class ObjectDataAccess {
 
     private <D> boolean isMatched(D data, ArrayList<Field> primaryFields, D fileData) throws IllegalAccessException {
         boolean matched = true;
-        for (Field primaryField : primaryFields) {
+        for(Field primaryField : primaryFields) {
             Object lookup = primaryField.get(data);
             Object row = primaryField.get(fileData);
-            if (lookup != null && lookup.equals(row)) {
+            if(lookup != null && lookup.equals(row)) {
                 continue;
             } else {
                 matched = false;
@@ -205,13 +205,13 @@ public class ObjectDataAccess {
      * @throws DataAccessException
      */
     public <D> List<D> removeObjects(D data) throws DataAccessException {
-        if (data == null) {
+        if(data == null) {
             throw new DataAccessException("Can not remove objects on a null value.");
         }
         HomeAssistantDAO haDOA = data.getClass()
                                      .getAnnotation(HomeAssistantDAO.class);
         String[] primaryIdentifiers = haDOA.primaryIdentifiers();
-        if (primaryIdentifiers.length < 1) {
+        if(primaryIdentifiers.length < 1) {
             throw new DataAccessException("Can not do a removal on a DAO with no primary identifier fields.");
         }
         List<D> removedEntries = new ArrayList<>();
@@ -219,15 +219,15 @@ public class ObjectDataAccess {
         try {
             List<D> allData = readFile(haDOA.location(), data);
             ArrayList<Field> primaryFields = getPrimaryFields(data, primaryIdentifiers);
-            for (D fileData : allData) {
-                if (isMatched(data, primaryFields, fileData)) {
+            for(D fileData : allData) {
+                if(isMatched(data, primaryFields, fileData)) {
                     removedEntries.add(fileData);
                 } else {
                     savedEntries.add(fileData);
                 }
             }
             safeToFile(haDOA.location(), savedEntries);
-        } catch (IOException | NoSuchFieldException | IllegalAccessException e) {
+        } catch(IOException | NoSuchFieldException | IllegalAccessException e) {
             throw new DataAccessException(e);
         }
         return removedEntries;
@@ -239,22 +239,22 @@ public class ObjectDataAccess {
     private <D> boolean matches(D data, D fileData) {
         boolean isEmpty = true;
         boolean matches = false;
-        for (Field f : data.getClass()
-                           .getDeclaredFields()) {
+        for(Field f : data.getClass()
+                          .getDeclaredFields()) {
             try {
                 boolean accessible = f.canAccess(data);
                 f.setAccessible(true);
                 Object dataField = f.get(data);
                 Object fileDataField = f.get(fileData);
-                if (dataField != null) {
+                if(dataField != null) {
                     isEmpty = false;
                 }
-                if (fileDataField != null && fileDataField.equals(dataField)) {
+                if(fileDataField != null && fileDataField.equals(dataField)) {
                     matches = true;
                     break;
                 }
                 f.setAccessible(accessible);
-            } catch (IllegalAccessException ignore) {
+            } catch(IllegalAccessException ignore) {
                 //we can ignore, if access is illegal then we should not be looking at it for a match
             }
         }
@@ -270,8 +270,8 @@ public class ObjectDataAccess {
         }.getType();
         ArrayList<D> objects = gson.fromJson(new FileReader(dataStorage), listType);
         ArrayList<D> fileContents = new ArrayList<>();
-        if (objects != null) {
-            for (Object object : objects) {
+        if(objects != null) {
+            for(Object object : objects) {
                 fileContents.add((D) gson.fromJson(gson.toJson(object), data.getClass()));
             }
         }
@@ -291,7 +291,7 @@ public class ObjectDataAccess {
 
     private File getDataStorage(String location) throws IOException {
         File dataStorage = new File(storageDirectory, location);
-        if (!dataStorage.exists()) {
+        if(!dataStorage.exists()) {
             dataStorage.createNewFile();
             dataStorage.setWritable(true, false);
             dataStorage.setReadable(true, false);
